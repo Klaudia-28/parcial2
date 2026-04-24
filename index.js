@@ -126,4 +126,14 @@ function drawScene() {
             Math.round(v2.y),
             "black"
         );
-        
+    }
+    //dibujar circunferencias en cada vértice
+    for (let v of vertices) {
+        midpointCircle(
+            Math.round(v.x),
+            Math.round(v.y),
+            R / 4,
+            "red"
+        );
+    }
+}
