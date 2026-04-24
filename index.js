@@ -108,18 +108,18 @@ return vertices;
 
 //función principal, que arma y dibuja una escena completa en el canvas
 function drawScene() {
+    const canvas = document.getElementById("canvas");
+    window.ctx = canvas.getContext("2d");
     let centerX = canvas.width / 2;
     let centerY = canvas.height / 2;
-    //número aleatorio de lados entre 5 y 10
     let sides = Math.floor(Math.random() * 6) + 5;
     let R = 150;
     let vertices = getPolygonVertices(centerX, centerY, sides, R);
-    //dibujar el polígono
+    // polígono
     for (let i = 0; i < sides; i++) {
         let v1 = vertices[i];
-        let v2 = vertices[(i + 1) % sides]; //conecta último con primero
-        //llamar a bresenhamLine
-            bresenhamLine(
+        let v2 = vertices[(i + 1) % sides];
+        bresenhamLine(
             Math.round(v1.x),
             Math.round(v1.y),
             Math.round(v2.x),
@@ -127,7 +127,7 @@ function drawScene() {
             "black"
         );
     }
-    //dibujar circunferencias en cada vértice
+    // círculos
     for (let v of vertices) {
         midpointCircle(
             Math.round(v.x),
@@ -137,3 +137,4 @@ function drawScene() {
         );
     }
 }
+window.onload = drawScene;
