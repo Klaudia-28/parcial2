@@ -83,7 +83,6 @@ function midpointCircle(cx, cy, r, color) {
 
 }
 
-
 /**
  * Calcula los vértices de un polígono regular.
  * @param {number} centerX, centerY - Centro
@@ -93,4 +92,15 @@ function midpointCircle(cx, cy, r, color) {
  */
 function getPolygonVertices(centerX, centerY, sides, radius) {
     // Desarrollo del estudiante (Uso de Math.sin/Math.cos y retorno de datos)
+    let vertices = [];
+    //ángulo entre cada vértice
+    let angleStep = (2 * Math.PI) / sides;
+    for (let i = 0; i < sides; i++) {
+    let angle = i * angleStep;
+    //cálculo de coordenadas usando trigonometría
+    let x = centerX + radius * Math.cos(angle);
+    let y = centerY + radius * Math.sin(angle);
+    vertices.push({ x: x, y: y });
+}
+return vertices;
 }
