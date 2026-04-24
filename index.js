@@ -1,14 +1,15 @@
-JavaScript
+//JavaScript
 // Estructura base dada por el profesor
 /**
  * Universidad - Facultad de Ingeniería
  * Asignatura: Introducción a la Computación Gráfica
- * * Estudiante: Klaudia Sophia Pérez Riaño
- * * Tarea: Implementar los algoritmos de rasterización manual.
+ * 
+ * Estudiante: Klaudia Sophia Pérez Riaño
+ * 
+ * Tarea: Implementar los algoritmos de rasterización manual.
  */
-
 // Función de apoyo para dibujar un píxel individual
-function drawPixel(ctx, x, y, color = "#000000") {
+function drawPixel(ctx, x, y, color = "#0a472e") {
     ctx.fillStyle = color;
     ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
 }
@@ -19,46 +20,42 @@ function drawPixel(ctx, x, y, color = "#000000") {
  * @param {number} x1, y1 - Coordenadas finales
  * @returns {void}
  */
-function bresenhamLine(x0, y0, x1, y1, color) {
-    // Desarrollo del estudiante
-    let dx= Math.abs(x1 - x0);
-let dy= Math.abs(y1 - y0);
-
-// dirección del movimiento
-let sx= (x0 < x1) ? 1 : -1;
-let sy= (y0 < y1) ? 1 : -1;
-
-// parámetro de decisión inicial
-let err= dx - dy;
-
-while (true) {
-    //dibujar pixel actual
-    drawPixel(ctx, x0, y0, color);
-    //condición de parada
-    if (x0=== x1 && y0===y1)
-        break;
-    let e2 =2*err;
-      //Si e2>-dy:se ajusta el error y se avanza en X
-      if (e2>-dy){
-        err -=dy;
-        x0 +=sx;
-      }
-      //Si e2<dx:se ajusta el error y se avanza en Y
-         if (e2 < dx) {
-        err +=dx;
-        y0 +=sy;
+function bresenhamLine(ctx, x0, y0, x1, y1, color) {
+    let dx = Math.abs(x1 - x0);
+    let dy = Math.abs(y1 - y0);
+    // dirección del movimiento
+    let sx = (x0 < x1) ? 1 : -1;
+    let sy = (y0 < y1) ? 1 : -1;
+    // parámetro de decisión inicial
+    // err representa el error acumulado entre la línea ideal y la rasterizada
+    let err = dx - dy;
+    while (true) {
+        // dibujar pixel actual
+        drawPixel(ctx, x0, y0, color);
+        // condición de parada
+        if (x0 === x1 && y0 === y1) break;
+        let e2 = 2 * err;
+        // Si e2 > -dy: se ajusta el error y se avanza en X
+        if (e2 > -dy) {
+            err -= dy;
+            x0 += sx;
+        }
+        // Si e2 < dx: se ajusta el error y se avanza en Y
+        if (e2 < dx) {
+            err += dx;
+            y0 += sy;
+        }
     }
-
 }
-}
-//función circunferencia con punto medio
-function midpointCircle(cx, cy, r, color) {
+// función circunferencia con punto medio
+function midpointCircle(ctx, cx, cy, r, color) {
     let x = 0;
-    let y = r
-    //parámetro de desición inicial
-    let p=1-r;
-    //función interna para aprovechar la simetría
-       function drawCirclePoints(cx, cy, x, y) {
+    let y = r;
+    // parámetro de decisión inicial
+    // p determina si el punto medio está dentro o fuera del círculo
+    let p = 1 - r;
+    // función interna para aprovechar la simetría de los 8 octantes
+    function drawCirclePoints(cx, cy, x, y) {
         drawPixel(ctx, cx + x, cy + y, color);
         drawPixel(ctx, cx - x, cy + y, color);
         drawPixel(ctx, cx + x, cy - y, color);
@@ -68,21 +65,20 @@ function midpointCircle(cx, cy, r, color) {
         drawPixel(ctx, cx + y, cy - x, color);
         drawPixel(ctx, cx - y, cy - x, color);
     }
-        while(x<=y){
+    while (x <= y) {
         drawCirclePoints(cx, cy, x, y);
-    //Si p<0:el punto medio está dentro del círculo
+
+        // Si p < 0: el punto medio está dentro del círculo
         if (p < 0) {
             p = p + 2 * x + 3;
         } else {
-    //Si p >= 0: el punto medio está fuera del círculo
+            // Si p >= 0: el punto medio está fuera del círculo
             p = p + 2 * (x - y) + 5;
             y--;
         }
         x++;
     }
-
 }
-
 /**
  * Calcula los vértices de un polígono regular.
  * @param {number} centerX, centerY - Centro
@@ -91,25 +87,26 @@ function midpointCircle(cx, cy, r, color) {
  * @returns {Array} Arreglo de objetos {x, y}
  */
 function getPolygonVertices(centerX, centerY, sides, radius) {
-    // Desarrollo del estudiante (Uso de Math.sin/Math.cos y retorno de datos)
     let vertices = [];
-    //ángulo entre cada vértice
+    // ángulo entre cada vértice
     let angleStep = (2 * Math.PI) / sides;
     for (let i = 0; i < sides; i++) {
-    //ángulo respecto al eje X positivo
-    let angle = i * angleStep;
-    //cálculo de coordenadas usando trigonometría
-    let x = centerX + radius * Math.cos(angle);
-    let y = centerY + radius * Math.sin(angle);
-    vertices.push({ x: x, y: y });
+        // ángulo respecto al eje X positivo
+        let angle = i * angleStep;
+        // cálculo de coordenadas usando trigonometría
+        let x = centerX + radius * Math.cos(angle);
+        let y = centerY + radius * Math.sin(angle);
+        vertices.push({
+            x: Math.round(x),
+            y: Math.round(y)
+        });
+    }
+    return vertices;
 }
-return vertices;
-}
-
-//función principal, que arma y dibuja una escena completa en el canvas
+// función principal, que arma y dibuja una escena completa en el canvas
 function drawScene() {
     const canvas = document.getElementById("canvas");
-    window.ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
     let centerX = canvas.width / 2;
     let centerY = canvas.height / 2;
     let sides = Math.floor(Math.random() * 6) + 5;
@@ -120,18 +117,20 @@ function drawScene() {
         let v1 = vertices[i];
         let v2 = vertices[(i + 1) % sides];
         bresenhamLine(
-            Math.round(v1.x),
-            Math.round(v1.y),
-            Math.round(v2.x),
-            Math.round(v2.y),
+            ctx,
+            v1.x,
+            v1.y,
+            v2.x,
+            v2.y,
             "black"
         );
     }
-    // círculos
+    // círculos en cada vértice
     for (let v of vertices) {
         midpointCircle(
-            Math.round(v.x),
-            Math.round(v.y),
+            ctx,
+            v.x,
+            v.y,
             R / 4,
             "red"
         );
