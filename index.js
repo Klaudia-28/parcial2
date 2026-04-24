@@ -68,6 +68,18 @@ function midpointCircle(cx, cy, r, color) {
         drawPixel(ctx, cx + y, cy - x, color);
         drawPixel(ctx, cx - y, cy - x, color);
     }
+        while(x<=y){
+        drawCirclePoints(cx, cy, x, y);
+    //Si p<0:el punto medio está dentro del círculo
+        if (p < 0) {
+            p = p + 2 * x + 3;
+        } else {
+    //Si p >= 0: el punto medio está fuera del círculo
+            p = p + 2 * (x - y) + 5;
+            y--;
+        }
+        x++;
+    }
 
 }
 
