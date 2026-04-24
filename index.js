@@ -96,6 +96,7 @@ function getPolygonVertices(centerX, centerY, sides, radius) {
     //ángulo entre cada vértice
     let angleStep = (2 * Math.PI) / sides;
     for (let i = 0; i < sides; i++) {
+    //ángulo respecto al eje X positivo
     let angle = i * angleStep;
     //cálculo de coordenadas usando trigonometría
     let x = centerX + radius * Math.cos(angle);
@@ -104,3 +105,25 @@ function getPolygonVertices(centerX, centerY, sides, radius) {
 }
 return vertices;
 }
+
+//función principal, que arma y dibuja una escena completa en el canvas
+function drawScene() {
+    let centerX = canvas.width / 2;
+    let centerY = canvas.height / 2;
+    //número aleatorio de lados entre 5 y 10
+    let sides = Math.floor(Math.random() * 6) + 5;
+    let R = 150;
+    let vertices = getPolygonVertices(centerX, centerY, sides, R);
+    //dibujar el polígono
+    for (let i = 0; i < sides; i++) {
+        let v1 = vertices[i];
+        let v2 = vertices[(i + 1) % sides]; //conecta último con primero
+        //llamar a bresenhamLine
+            bresenhamLine(
+            Math.round(v1.x),
+            Math.round(v1.y),
+            Math.round(v2.x),
+            Math.round(v2.y),
+            "black"
+        );
+        
