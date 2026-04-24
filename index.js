@@ -30,6 +30,26 @@ let sy= (y0 < y1) ? 1 : -1;
 
 // parámetro de decisión inicial
 let err= dx - dy;
+
+while (true) {
+    //dibujar pixel actual
+    drawPixel(ctx, x0, y0, color);
+    //condición de parada
+    if (x0=== x1 && y0===y1)
+        break;
+    let e2 =2*err;
+      //Si e2>-dy:se ajusta el error y se avanza en X
+      if (e2>-dy){
+        err -=dy;
+        x0 +=sx;
+      }
+      //Si e2<dx:se ajusta el error y se avanza en Y
+         if (e2 < dx) {
+        err +=dx;
+        y0 +=sy;
+    }
+
+}
 }
 
 /**
