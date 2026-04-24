@@ -9,7 +9,7 @@
  * Tarea: Implementar los algoritmos de rasterización manual.
  */
 // Función de apoyo para dibujar un píxel individual
-function drawPixel(ctx, x, y, color = "#0a472e") {
+function drawPixel(ctx, x, y, color = "#5a8b19") {
     ctx.fillStyle = color;
     ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
 }
@@ -132,7 +132,7 @@ function drawScene() {
             v.x,
             v.y,
             R / 4,
-            "red"
+            "green"
         );
     }
 }
