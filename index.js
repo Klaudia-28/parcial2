@@ -3,7 +3,7 @@ JavaScript
 /**
  * Universidad - Facultad de Ingeniería
  * Asignatura: Introducción a la Computación Gráfica
- * * Estudiante: ________________
+ * * Estudiante: Klaudia Sophia Pérez Riaño
  * * Tarea: Implementar los algoritmos de rasterización manual.
  */
 
@@ -51,6 +51,26 @@ while (true) {
 
 }
 }
+//función circunferencia con punto medio
+function midpointCircle(cx, cy, r, color) {
+    let x = 0;
+    let y = r
+    //parámetro de desición inicial
+    let p=1-r;
+    //función interna para aprovechar la simetría
+       function drawCirclePoints(cx, cy, x, y) {
+        drawPixel(ctx, cx + x, cy + y, color);
+        drawPixel(ctx, cx - x, cy + y, color);
+        drawPixel(ctx, cx + x, cy - y, color);
+        drawPixel(ctx, cx - x, cy - y, color);
+        drawPixel(ctx, cx + y, cy + x, color);
+        drawPixel(ctx, cx - y, cy + x, color);
+        drawPixel(ctx, cx + y, cy - x, color);
+        drawPixel(ctx, cx - y, cy - x, color);
+    }
+
+}
+
 
 /**
  * Calcula los vértices de un polígono regular.
